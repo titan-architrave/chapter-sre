@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "eu-central-1"
+  region = var.aws_region
 }
 
 resource "aws_iam_user" "ops" {
@@ -62,6 +62,10 @@ resource "aws_iam_access_key" "ops" {
   pgp_key = "keybase:titanarch"
 }
 
-output "secret" {
+output "access_key" {
+  value = "${aws_iam_access_key.ops.id}"
+}
+
+output "secret_key" {
   value = "${aws_iam_access_key.ops.encrypted_secret}"
 }
