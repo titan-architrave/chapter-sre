@@ -1,5 +1,5 @@
 provider "aws" {
-  region = var.aws_region
+  region = "eu-central-1"
 }
 
 resource "aws_iam_user" "ops" {
@@ -55,4 +55,13 @@ resource "aws_iam_policy_attachment" "dev" {
   roles      = ["${aws_iam_role.deploy.name}"]
   groups     = ["${aws_iam_group.dev.name}"]
   policy_arn = "${aws_iam_policy.ec2.arn}"
+}
+
+resource "aws_iam_access_key" "ops" {
+  user    = "${aws_iam_user.ops.name}"
+  pgp_key = "keybase:titanarch"
+}
+
+output "secret" {
+  value = "${aws_iam_access_key.ops.encrypted_secret}"
 }
